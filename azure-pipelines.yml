@@ -38,3 +38,4 @@ steps:
         az synapse role assignment create --workspace-name azdwudacity \
          --role "Synapse Administrator" \
          --assignee-object-id $(SynapseAdminObjectId)
+        az synapse role assignment list --workspace-name azdwudacity
