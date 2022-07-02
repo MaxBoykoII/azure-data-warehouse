@@ -19,3 +19,4 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 }
 
 output storageAccountId string = storage.id
+output storageAccountUrl string = 'https://${project}.dfs.core.windows.net'

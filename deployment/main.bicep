@@ -1,5 +1,5 @@
 @description('Specifies the location for resources.')
-param location string = 'westus2'
+param location string = 'eastus'
 
 @description('Specifies the environment abbreviation')
 param env string = 'test'
@@ -30,5 +30,6 @@ module synapseModule 'synapse/synapse.bicep' = {
     location: location
     project: projectName
     storageAccountId: dataLakeModule.outputs.storageAccountId
+    accountUrl: dataLakeModule.outputs.storageAccountUrl
   }
 }

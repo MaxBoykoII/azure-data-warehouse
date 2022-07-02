@@ -7,6 +7,9 @@ param project string
 @description('Specifies the id of the data lake storage account')
 param storageAccountId string
 
+@description('Specifies the url of the data lake storage account')
+param accountUrl string
+
 resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: project
   location: location
@@ -17,6 +20,7 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   properties: {
     defaultDataLakeStorage: {
       filesystem: 'datalakefiles'
+      accountUrl: accountUrl
       resourceId: storageAccountId
       createManagedPrivateEndpoint: false
     }
