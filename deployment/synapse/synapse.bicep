@@ -24,5 +24,6 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
       resourceId: storageAccountId
       createManagedPrivateEndpoint: false
     }
+    publicNetworkAccess: 'Enabled'
   }
 }
