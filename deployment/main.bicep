@@ -22,3 +22,13 @@ module dataLakeModule 'data-lake/data-lake.bicep' = {
     project: projectName
   }
 }
+
+module synapseModule 'synapse/synapse.bicep' = {
+  name: 'synapse'
+  scope: rg
+  params: {
+    location: location
+    project: projectName
+    storageAccountId: dataLakeModule.outputs.storageAccountId
+  }
+}

@@ -17,3 +17,5 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   isHnsEnabled: true
   }
 }
+
+output storageAccountId string = storage.id
