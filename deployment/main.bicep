@@ -6,6 +6,7 @@ param env string = 'test'
 
 targetScope = 'subscription'
 
+var projectName = 'az-dw'
 var prefix = 'az-dw-${env}'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -18,6 +19,6 @@ module dataLakeModule 'data-lake/data-lake.bicep' = {
   scope: rg
   params: {
     location: location
-    prefix: prefix
+    project: projectName
   }
 }
