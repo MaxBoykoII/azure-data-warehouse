@@ -1,19 +1,28 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  - main
+
+variables:
+  - name: deploymentLocation
+    value: uswest2
+
+  - name: azureResourceManagerConnection
+    value: az-dw-arm-sc
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - checkout: self
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - displayName: "TEST: Transpile bicep"
+    bash: az bicep build --file ./deployment/main.bicep
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: "TEST: Deploy Main Template"
+    inputs:
+      azureResourceManagerConnection: $(azureResourceManagerConnection)
+      deploymentScope: "Subscription"
+      location: $(deploymentLocation)
+      templateLocation: "Linked artifact"
+      csmFile: "./deployment/main.json"
+      deploymentMode: "Incremental"
