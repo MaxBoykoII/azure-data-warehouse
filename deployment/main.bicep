@@ -6,7 +6,7 @@ param env string = 'test'
 
 targetScope = 'subscription'
 
-var projectName = 'azdw'
+var projectName = 'azdwudacity'
 var prefix = '${projectName}-${env}'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
