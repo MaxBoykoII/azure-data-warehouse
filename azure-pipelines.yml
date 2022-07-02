@@ -14,8 +14,8 @@ pool:
 steps:
   - checkout: self
 
-  - displayName: "TEST: Transpile bicep"
-    bash: az bicep build --file ./deployment/main.bicep
+  - bash: az bicep build --file ./deployment/main.bicep
+    displayName: "TEST: Transpile bicep"
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: "TEST: Deploy Main Template"
