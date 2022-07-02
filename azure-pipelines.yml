@@ -37,5 +37,6 @@ steps:
       inlineScript: |
         az synapse role assignment create --workspace-name azdwudacity \
          --role "Synapse Administrator" \
+         ----assignee-type "Group" \
          --assignee-object-id $(SynapseAdminObjectId)
         az synapse role assignment list --workspace-name azdwudacity
