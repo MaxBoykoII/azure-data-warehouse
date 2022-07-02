@@ -33,5 +33,14 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
     }
     azureADOnlyAuthentication: false
     trustedServiceBypassEnabled: true
+
+  }
+
+  resource workspaceFirewall 'firewallRules@2021-04-01-preview' = {
+    name: 'allowAll'
+    properties: {
+      startIpAddress: '0.0.0.0'
+      endIpAddress: '255.255.255.255'
+    }
   }
 }
