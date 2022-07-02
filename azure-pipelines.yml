@@ -15,15 +15,26 @@ steps:
   - checkout: self
 
   - bash: az bicep build --file ./deployment/main.bicep
-    displayName: "TEST: Transpile bicep"
+    displayName: 'TEST: Transpile bicep'
 
   - task: AzureResourceManagerTemplateDeployment@3
-    displayName: "TEST: Deploy Main Template"
+    displayName: 'TEST: Deploy Main Template'
     inputs:
       azureResourceManagerConnection: $(azureResourceManagerConnection)
-      deploymentScope: "Subscription"
+      deploymentScope: 'Subscription'
       location: $(deploymentLocation)
-      templateLocation: "Linked artifact"
-      csmFile: "./deployment/main.json"
+      templateLocation: 'Linked artifact'
+      csmFile: './deployment/main.json'
       overrideParameters: '-synapseAdminObjectId $(SynapseAdminObjectId)'
-      deploymentMode: "Incremental"
+      deploymentMode: 'Incremental'
+
+  - task: AzureCLI@2
+    displayName: Assign Synapse Roles
+    inputs:
+      azureSubscription: $(azureResourceManagerConnection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az synapse role assignment create --workspace-name azdwudacity \
+         --role "Synapse Administrator" \
+         --assignee-object-id $(SynapseAdminObjectId)

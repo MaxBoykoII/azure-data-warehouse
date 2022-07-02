@@ -32,6 +32,6 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectId
     }
     azureADOnlyAuthentication: false
-    trustedServiceBypassEnabled: false
+    trustedServiceBypassEnabled: true
   }
 }
