@@ -3,7 +3,7 @@ trigger:
 
 variables:
   - name: deploymentLocation
-    value: uswest2
+    value: westus2
 
   - name: azureResourceManagerConnection
     value: az-dw-arm-sc
