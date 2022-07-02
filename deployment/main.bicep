@@ -6,8 +6,8 @@ param env string = 'test'
 
 targetScope = 'subscription'
 
-var projectName = 'az-dw'
-var prefix = 'az-dw-${env}'
+var projectName = 'azdw'
+var prefix = '${projectName}-${env}'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${prefix}-rg'
