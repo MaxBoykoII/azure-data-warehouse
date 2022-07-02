@@ -30,6 +30,5 @@ module synapseModule 'synapse/synapse.bicep' = {
     location: location
     project: projectName
     storageAccountId: dataLakeModule.outputs.storageAccountId
-    storageAccountUrl: dataLakeModule.outputs.storageAccountUrl
   }
 }
