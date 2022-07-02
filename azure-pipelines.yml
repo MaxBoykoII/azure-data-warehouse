@@ -25,4 +25,5 @@ steps:
       location: $(deploymentLocation)
       templateLocation: "Linked artifact"
       csmFile: "./deployment/main.json"
+      overrideParameters: '-synapseAdminObjectId $(SynapseAdminObjectId)'
       deploymentMode: "Incremental"

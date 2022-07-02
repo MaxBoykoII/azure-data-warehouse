@@ -4,6 +4,9 @@ param location string = 'eastus'
 @description('Specifies the environment abbreviation')
 param env string = 'test'
 
+@description('Synapse admin object id')
+param synapseAdminObjectId string
+
 targetScope = 'subscription'
 
 var projectName = 'azdwudacity'
@@ -31,5 +34,6 @@ module synapseModule 'synapse/synapse.bicep' = {
     project: projectName
     storageAccountId: dataLakeModule.outputs.storageAccountId
     accountUrl: dataLakeModule.outputs.storageAccountUrl
+    initialWorkspaceAdminObjectId: synapseAdminObjectId
   }
 }

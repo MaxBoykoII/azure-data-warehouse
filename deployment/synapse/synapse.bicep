@@ -10,6 +10,9 @@ param storageAccountId string
 @description('Specifies the url of the data lake storage account')
 param accountUrl string
 
+@description('Specifies the object id of the initial workspace admin')
+param initialWorkspaceAdminObjectId string
+
 resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: project
   location: location
@@ -25,5 +28,10 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
       createManagedPrivateEndpoint: false
     }
     publicNetworkAccess: 'Enabled'
+    cspWorkspaceAdminProperties: {
+      initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectId
+    }
+    azureADOnlyAuthentication: false
+    trustedServiceBypassEnabled: false
   }
 }
