@@ -33,7 +33,7 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
     workspaceRepositoryConfiguration: {
       accountName: 'MaxBoykoII'
       collaborationBranch: 'main'
-      type: 'GitHub'
+      type: 'WorkspaceGitHubConfiguration'
       rootFolder: '/artifacts'
       repositoryName: 'azure-data-warehouse'
     }
