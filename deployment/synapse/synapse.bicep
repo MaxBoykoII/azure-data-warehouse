@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Specifies the base name for resources')
-param project string
+param prefix string
 
 @description('Specifies the id of the data lake storage account')
 param storageAccountId string
@@ -14,7 +14,7 @@ param accountUrl string
 param initialWorkspaceAdminObjectId string
 
 resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
-  name: project
+  name: prefix
   location: location
 
   identity: {

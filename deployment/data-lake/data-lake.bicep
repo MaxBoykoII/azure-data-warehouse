@@ -2,10 +2,10 @@
 param location string = resourceGroup().location
 
 @description('Specifies the base name for resources')
-param project string
+param prefix string
 
 resource storage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: project
+  name: prefix
   kind: 'StorageV2'
   location: location
   sku: {
@@ -19,4 +19,4 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 }
 
 output storageAccountId string = storage.id
-output storageAccountUrl string = 'https://${project}.dfs.core.windows.net'
+output storageAccountUrl string = 'https://${prefix}.dfs.core.windows.net'

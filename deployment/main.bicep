@@ -2,15 +2,14 @@
 param location string = 'eastus'
 
 @description('Specifies the environment abbreviation')
-param env string = 'test'
+param env string = 'dev'
 
 @description('Synapse admin object id')
 param synapseAdminObjectId string
 
 targetScope = 'subscription'
 
-var projectName = 'azdwudacity'
-var prefix = '${projectName}-${env}'
+var prefix = 'azdwudacity${env}'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${prefix}-rg'
@@ -22,7 +21,7 @@ module dataLakeModule 'data-lake/data-lake.bicep' = {
   scope: rg
   params: {
     location: location
-    project: projectName
+    prefix: prefix
   }
 }
 
@@ -31,7 +30,7 @@ module synapseModule 'synapse/synapse.bicep' = {
   scope: rg
   params: {
     location: location
-    project: projectName
+    prefix: prefix
     storageAccountId: dataLakeModule.outputs.storageAccountId
     accountUrl: dataLakeModule.outputs.storageAccountUrl
     initialWorkspaceAdminObjectId: synapseAdminObjectId
