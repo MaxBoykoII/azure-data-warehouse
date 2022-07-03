@@ -10,6 +10,7 @@ param storageAccountId string
 @description('Specifies the url of the data lake storage account')
 param accountUrl string
 
+
 resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: prefix
   location: location
@@ -25,10 +26,17 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
       createManagedPrivateEndpoint: false
     }
     publicNetworkAccess: 'Enabled'
-    
+
     azureADOnlyAuthentication: false
     trustedServiceBypassEnabled: true
 
+    workspaceRepositoryConfiguration: {
+      accountName: 'MaxBoykoII'
+      collaborationBranch: 'main'
+      type: 'GitHub'
+      rootFolder: '/artifacts'
+      repositoryName: 'azure-data-warehouse'
+    }
   }
 
   resource workspaceFirewall 'firewallRules@2021-04-01-preview' = {
