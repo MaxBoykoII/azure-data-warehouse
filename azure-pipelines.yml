@@ -32,13 +32,22 @@ steps:
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2
-    displayName: Assign Synapse Roles
+    displayName: 'DEV: Assign Synapse Roles'
     inputs:
       azureSubscription: $(azureResourceManagerConnection)
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az synapse role assignment create --workspace-name $(resourcePrefix) \
-         --role "Synapse Administrator" \
-         --assignee-type "Group" \
-         --assignee-object-id $(SynapseAdminObjectId)
+        isAssigned=$(az synapse role assignment list --workspace $(resourcePrefix) \
+             --query "[?principalId=='$(SynapseAdminObjectId)'] | length(@)" \
+             --output tsv)
+
+        if [ $isAssigned == 1 ]
+        then
+            echo "Skipping - the assignment has already exits"
+        else
+            az synapse role assignment create --workspace-name $(resourcePrefix) \
+                --role "Synapse Administrator" \
+                --assignee-type "Group" \
+                --assignee-object-id $(SynapseAdminObjectId)
+        fi
