@@ -1,15 +1,14 @@
 @description('Specifies the location for resources.')
 param location string = 'eastus'
 
-@description('Specifies the environment abbreviation')
-param env string = 'dev'
+@description('Specifies the base prefix for naming resources')
+param prefix string = 'azdwudacitydev'
+
 
 @description('Synapse admin object id')
 param synapseAdminObjectId string
 
 targetScope = 'subscription'
-
-var prefix = 'azdwudacity${env}'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${prefix}-rg'

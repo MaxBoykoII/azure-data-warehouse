@@ -8,6 +8,9 @@ variables:
   - name: azureResourceManagerConnection
     value: az-dw-arm-sc
 
+  - name: resourcePrefix
+    value: azdwudacitydev
+
 pool:
   vmImage: ubuntu-latest
 
@@ -15,17 +18,17 @@ steps:
   - checkout: self
 
   - bash: az bicep build --file ./deployment/main.bicep
-    displayName: 'TEST: Transpile bicep'
+    displayName: 'DEV: Transpile bicep'
 
   - task: AzureResourceManagerTemplateDeployment@3
-    displayName: 'TEST: Deploy Main Template'
+    displayName: 'DEV: Deploy Main Template'
     inputs:
       azureResourceManagerConnection: $(azureResourceManagerConnection)
       deploymentScope: 'Subscription'
       location: $(deploymentLocation)
       templateLocation: 'Linked artifact'
       csmFile: './deployment/main.json'
-      overrideParameters: '-synapseAdminObjectId $(SynapseAdminObjectId)'
+      overrideParameters: '-prefix $(SynapseAdminObjectId)'
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2
@@ -35,8 +38,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az synapse role assignment create --workspace-name azdwudacity \
+        az synapse role assignment create --workspace-name $(resourcePrefix) \
          --role "Synapse Administrator" \
          --assignee-type "Group" \
          --assignee-object-id $(SynapseAdminObjectId)
-        az synapse role assignment list --workspace-name azdwudacity
