@@ -3,13 +3,13 @@ trigger:
 
 variables:
   - name: deploymentLocation
-    value: eastus
+    value: 'eastus'
 
   - name: azureResourceManagerConnection
-    value: az-dw-arm-sc
+    value: 'az-dw-arm-sc'
 
   - name: resourcePrefix
-    value: azdwudacitydev
+    value: 'azdwudacitydev'
 
 pool:
   vmImage: ubuntu-latest
