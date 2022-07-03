@@ -4,10 +4,6 @@ param location string = 'eastus'
 @description('Specifies the base prefix for naming resources')
 param prefix string = 'azdwudacitydev'
 
-
-@description('Synapse admin object id')
-param synapseAdminObjectId string
-
 targetScope = 'subscription'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -32,6 +28,5 @@ module synapseModule 'synapse/synapse.bicep' = {
     prefix: prefix
     storageAccountId: dataLakeModule.outputs.storageAccountId
     accountUrl: dataLakeModule.outputs.storageAccountUrl
-    initialWorkspaceAdminObjectId: synapseAdminObjectId
   }
 }
