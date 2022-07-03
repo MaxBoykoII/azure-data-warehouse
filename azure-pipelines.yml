@@ -28,7 +28,7 @@ steps:
       location: $(deploymentLocation)
       templateLocation: 'Linked artifact'
       csmFile: './deployment/main.json'
-      overrideParameters: '-prefix $(SynapseAdminObjectId)'
+      overrideParameters: '-prefix $(resourcePrefix)'
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2
