@@ -50,7 +50,7 @@ stages:
 
   - stage: TEST_Deployment
     displayName: 'TEST Deployment'
-    condition: and(eq(variables.isMain, 'true'), eq(parameters.variables, 'true'))
+    condition: and(eq(variables.isMain, 'true'), eq(variables.isRelease, 'true'))
     variables:
       resourcePrefix: 'azdwudacitytest'
 
