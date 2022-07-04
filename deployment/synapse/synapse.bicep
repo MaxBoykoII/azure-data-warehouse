@@ -54,7 +54,7 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 
   resource dedicatedPool 'sqlPools@2021-06-01' = {
-    name: 'dedicated-pool'
+    name: 'bikesharepool'
     sku:  {
       name: 'DW100c'
     }
