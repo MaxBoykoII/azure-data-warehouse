@@ -5,6 +5,7 @@ parameters:
   - name: isRelease
     displayName: 'Trigger a release to TEST'
     type: boolean
+    default: 'false'
 
 variables:
   deploymentLocation: 'eastus'
