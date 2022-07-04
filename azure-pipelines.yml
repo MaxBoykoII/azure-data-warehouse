@@ -4,6 +4,7 @@ trigger:
 variables:
   deploymentLocation: 'eastus'
   azureResourceManagerConnection: 'az-dw-arm-sc'
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
 pool:
   vmImage: ubuntu-latest
@@ -11,6 +12,7 @@ pool:
 stages:
   - stage: Dev_Deployment
     displayName: 'DEV Deployment'
+    condition: eq(variables.isMain, 'true')
     variables:
       resourcePrefix: 'azdwudacitydev'
 
