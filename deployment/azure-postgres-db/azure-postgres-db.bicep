@@ -19,10 +19,6 @@ resource server 'Microsoft.DBForPostgreSql/flexibleServers@2020-02-14-preview' =
     tier: 'Burstable'
   }
 
-  identity: {
-    type: 'SystemAssigned'
-  }
-
   properties: {
     version: '13'
     administratorLogin: administratorLogin
