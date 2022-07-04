@@ -72,14 +72,28 @@ stages:
                     integrateWithSourceControl: 'no'
 
       - job: Deploy_TEST_Workspace
+        dependsOn: 'Deploy_TEST_Environment'
         displayName: 'TEST: Deploy Workspace Artifacts'
         steps:
+          - task: Bash@3
+            displayName: 'TEST: Print environment variables'
+            inputs:
+              targetType: 'inline'
+              script: 'env | sort'
+
           - checkout: workspace_publish
+
+          - task: Bash@3
+            displayName: 'TEST: List Contents of $(System.DefaultWorkingDirectory)'
+            inputs:
+              targetType: 'inline'
+              script: 'ls -R $(System.DefaultWorkingDirectory)'
+
 
           - task: 'Synapse workspace deployment@1'
             inputs:
-              TemplateFile: 'workspace_publish/azdwudacitydev/TemplateForWorkspace.json'
-              ParametersFile: 'workspace_publish/azdwudacitydev/TemplateParametersForWorkspace.json'
+              TemplateFile: '$(System.DefaultWorkingDirectory)/workspace_publish/azdwudacitydev/TemplateForWorkspace.json'
+              ParametersFile: '$(System.DefaultWorkingDirectory)/workspace_publish/azdwudacitydev/TemplateParametersForWorkspace.json'
               OverrideArmParameters: '-workspaceName $(resourcePrefix)'
               azureSubscription: 'az-dw-arm-sc'
               ResourceGroupName: '$(resourcePrefix)-rg'
