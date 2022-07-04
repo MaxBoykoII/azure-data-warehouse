@@ -70,3 +70,19 @@ stages:
                     azureResourceManagerConnection: $(azureResourceManagerConnection)
                     adminGroupObjectId: $(SynapseAdminObjectId)
                     integrateWithSourceControl: 'no'
+
+      - job: Deploy_TEST_Workspace
+        displayName: 'TEST: Deploy Workspace Artifacts'
+        steps:
+          - checkout: workspace_publish
+
+          - task: 'Synapse workspace deployment@1'
+            inputs:
+              TemplateFile: 'workspace_publish/azdwudacitydev/TemplateForWorkspace.json'
+              ParametersFile: 'workspace_publish/azdwudacitydev/TemplateParametersForWorkspace.json'
+              OverrideArmParameters: '-workspaceName $(resourcePrefix)'
+              azureSubscription: 'az-dw-arm-sc'
+              ResourceGroupName: '$(resourcePrefix)-rg'
+              TargetWorkspaceName: '$(resourcePrefix)'
+              DeleteArtifactsNotInTemplate: false
+              Environment: 'prod' # Azure Cloud environment, NOT our PROD environment
