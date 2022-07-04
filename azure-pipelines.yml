@@ -1,12 +1,23 @@
 trigger:
   - main
-  - workspace_publish
+
+parameters:
+  - name: isRelease
+    displayName: 'Trigger a release to TEST'
+    type: boolean
 
 variables:
   deploymentLocation: 'eastus'
   azureResourceManagerConnection: 'az-dw-arm-sc'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-  isWorkspacePublish: $[eq(variables['Build.SourceBranch'], 'refs/heads/workspace_publish')]
+
+resources:
+  repositories:
+    - repository: workspace_publish
+      type: github
+      endpoint: MaxBoykoII
+      name: MaxBoykoII/azure-data-warehouse
+      ref: workspace_publish
 
 pool:
   vmImage: ubuntu-latest
@@ -14,7 +25,7 @@ pool:
 stages:
   - stage: DEV_Deployment
     displayName: 'DEV Deployment'
-    condition: eq(variables.isMain, 'true')
+    condition: and(eq(variables.isMain, 'true'), not(eq(parameters.isRelease, 'true')))
     variables:
       resourcePrefix: 'azdwudacitydev'
 
@@ -37,7 +48,7 @@ stages:
 
   - stage: TEST_Deployment
     displayName: 'TEST Deployment'
-    condition: eq(variables.isWorkspacePublish, 'true')
+    condition: and(eq(variables.isMain, 'true'), eq(parameters.isRelease, 'true'))
     variables:
       resourcePrefix: 'azdwudacitytest'
 
