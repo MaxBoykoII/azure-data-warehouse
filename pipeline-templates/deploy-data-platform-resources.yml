@@ -22,6 +22,14 @@ parameters:
     default: 'no'
 
 steps:
+  - checkout: self
+
+  - task: Bash@3
+    displayName: '${{ parameters.environmentName }}'
+    inputs:
+      targetType: 'inline'
+      script: 'env | sort'
+
   - bash: az bicep build --file ./deployment/main.bicep
     displayName: '${{ parameters.environmentName }}: Transpile bicep'
 

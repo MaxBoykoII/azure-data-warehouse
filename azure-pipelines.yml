@@ -22,8 +22,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - checkout: self
-
                 - template: pipeline-templates/deploy-data-platform-resources.yml
                   parameters:
                     environmentName: 'DEV'
