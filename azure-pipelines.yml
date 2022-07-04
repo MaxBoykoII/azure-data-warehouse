@@ -1,16 +1,18 @@
 trigger:
   - main
+  - workspace_publish
 
 variables:
   deploymentLocation: 'eastus'
   azureResourceManagerConnection: 'az-dw-arm-sc'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isWorkspacePublish: $[eq(variables['Build.SourceBranch'], 'refs/heads/workspace_publish')]
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: Dev_Deployment
+  - stage: DEV_Deployment
     displayName: 'DEV Deployment'
     condition: eq(variables.isMain, 'true')
     variables:
@@ -32,3 +34,26 @@ stages:
                     azureResourceManagerConnection: $(azureResourceManagerConnection)
                     adminGroupObjectId: $(SynapseAdminObjectId)
                     integrateWithSourceControl: 'yes'
+
+  - stage: TEST_Deployment
+    displayName: 'TEST Deployment'
+    condition: eq(variables.isWorkspacePublish, 'true')
+    variables:
+      resourcePrefix: 'azdwudacitytest'
+
+    jobs:
+      - deployment: Deploy_TEST_Environment
+        displayName: 'TEST: Deploy resources'
+        environment: 'Azure Data Warehouse - TEST'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: pipeline-templates/deploy-data-platform-resources.yml
+                  parameters:
+                    environmentName: 'TEST'
+                    resourcePrefix: $(resourcePrefix)
+                    deploymentLocation: $(deploymentLocation)
+                    azureResourceManagerConnection: $(azureResourceManagerConnection)
+                    adminGroupObjectId: $(SynapseAdminObjectId)
+                    integrateWithSourceControl: 'no'
