@@ -92,8 +92,8 @@ stages:
 
           - task: 'Synapse workspace deployment@1'
             inputs:
-              TemplateFile: '$(System.DefaultWorkingDirectory)/workspace_publish/azdwudacitydev/TemplateForWorkspace.json'
-              ParametersFile: '$(System.DefaultWorkingDirectory)/workspace_publish/azdwudacitydev/TemplateParametersForWorkspace.json'
+              TemplateFile: '$(System.DefaultWorkingDirectory)/azdwudacitydev/TemplateForWorkspace.json'
+              ParametersFile: '$(System.DefaultWorkingDirectory)/azdwudacitydev/TemplateParametersForWorkspace.json'
               OverrideArmParameters: '-workspaceName $(resourcePrefix)'
               azureSubscription: 'az-dw-arm-sc'
               ResourceGroupName: '$(resourcePrefix)-rg'
