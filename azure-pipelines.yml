@@ -11,6 +11,7 @@ variables:
   deploymentLocation: 'eastus'
   azureResourceManagerConnection: 'az-dw-arm-sc'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isRelease: ${{ parameters.isRelease}}
 
 resources:
   repositories:
@@ -26,7 +27,7 @@ pool:
 stages:
   - stage: DEV_Deployment
     displayName: 'DEV Deployment'
-    condition: and(eq(variables.isMain, 'true'), not(eq(parameters.isRelease, 'true')))
+    condition: and(eq(variables.isMain, 'true'), not(eq(variables.isRelease, 'true')))
     variables:
       resourcePrefix: 'azdwudacitydev'
 
@@ -49,7 +50,7 @@ stages:
 
   - stage: TEST_Deployment
     displayName: 'TEST Deployment'
-    condition: and(eq(variables.isMain, 'true'), eq(parameters.isRelease, 'true'))
+    condition: and(eq(variables.isMain, 'true'), eq(parameters.variables, 'true'))
     variables:
       resourcePrefix: 'azdwudacitytest'
 
