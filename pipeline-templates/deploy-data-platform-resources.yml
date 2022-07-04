@@ -48,6 +48,15 @@ steps:
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2
+    displayName: '${{ parameters.environmentName }}: Pause dedicated sql pool'
+    inputs:
+      azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az synapse sql pool pause --name bikesharepool --workspace-name ${{ parameters.resourcePrefix}} --resource-group ${{ parameters.resourcePrefix}}-rg
+
+  - task: AzureCLI@2
     displayName: '${{ parameters.environmentName }}: Assign Synapse Roles'
     inputs:
       azureSubscription: ${{ parameters.azureResourceManagerConnection }}
