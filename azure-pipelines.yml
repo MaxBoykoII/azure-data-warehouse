@@ -17,37 +17,10 @@ pool:
 steps:
   - checkout: self
 
-  - bash: az bicep build --file ./deployment/main.bicep
-    displayName: 'DEV: Transpile bicep'
-
-  - task: AzureResourceManagerTemplateDeployment@3
-    displayName: 'DEV: Deploy Main Template'
-    inputs:
+  - template: pipeline-templates/deploy-data-platform-resources.yml
+    parameters:
+      environmentName: 'DEV'
+      resourcePrefix: $(resourcePrefix)
+      deploymentLocation: $(deploymentLocation)
       azureResourceManagerConnection: $(azureResourceManagerConnection)
-      deploymentScope: 'Subscription'
-      location: $(deploymentLocation)
-      templateLocation: 'Linked artifact'
-      csmFile: './deployment/main.json'
-      overrideParameters: '-prefix $(resourcePrefix)'
-      deploymentMode: 'Incremental'
-
-  - task: AzureCLI@2
-    displayName: 'DEV: Assign Synapse Roles'
-    inputs:
-      azureSubscription: $(azureResourceManagerConnection)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        isAssigned=$(az synapse role assignment list --workspace $(resourcePrefix) \
-             --query "[?principalId=='$(SynapseAdminObjectId)'] | length(@)" \
-             --output tsv)
-
-        if [ $isAssigned == 1 ]
-        then
-            echo "Skipping - the assignment has already exits"
-        else
-            az synapse role assignment create --workspace-name $(resourcePrefix) \
-                --role "Synapse Administrator" \
-                --assignee-type "Group" \
-                --assignee-object-id $(SynapseAdminObjectId)
-        fi
+      adminGroupObjectId: $(SynapseAdminObjectId)

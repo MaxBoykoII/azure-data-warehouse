@@ -1,0 +1,51 @@
+parameters:
+ - name: environmentName
+   type: string
+  
+ - name: resourcePrefix
+   type: string
+
+ - name: deploymentLocation
+   type: string
+
+ - name: azureResourceManagerConnection
+   type: string
+
+ - name: adminGroupObjectId
+   type: string
+
+steps:
+  - bash: az bicep build --file ./deployment/main.bicep
+    displayName: '${{ parameters.environmentName }}: Transpile bicep'
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: '${{ parameters.environmentName }}: Deploy Main Template'
+    inputs:
+      azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+      deploymentScope: 'Subscription'
+      location: ${{ parameters.deploymentLocation }}
+      templateLocation: 'Linked artifact'
+      csmFile: './deployment/main.json'
+      overrideParameters: '-prefix ${{ parameters.resourcePrefix }}'
+      deploymentMode: 'Incremental'
+
+  - task: AzureCLI@2
+    displayName: '${{ parameters.environmentName }}: Assign Synapse Roles'
+    inputs:
+      azureSubscription: ${{ parameters.azureResourceManagerConnection }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        isAssigned=$(az synapse role assignment list --workspace ${{ parameters.resourcePrefix }} \
+             --query "[?principalId=='${{ parameters.adminGroupObjectId }}'] | length(@)" \
+             --output tsv)
+
+        if [ $isAssigned == 1 ]
+        then
+            echo "Skipping - the assignment has already exits"
+        else
+            az synapse role assignment create --workspace-name ${{ parameters.resourcePrefix }} \
+                --role "Synapse Administrator" \
+                --assignee-type "Group" \
+                --assignee-object-id ${{ parameters.adminGroupObjectId }}
+        fi
