@@ -14,6 +14,9 @@ parameters:
   - name: adminGroupObjectId
     type: string
 
+  - name: dbAdminPassword
+    type: string
+
   - name: integrateWithSourceControl
     type: string
     values:
@@ -41,7 +44,7 @@ steps:
       location: ${{ parameters.deploymentLocation }}
       templateLocation: 'Linked artifact'
       csmFile: './deployment/main.json'
-      overrideParameters: '-prefix ${{ parameters.resourcePrefix }} -integrateWithSourceControl ${{ parameters.integrateWithSourceControl }}'
+      overrideParameters: '-prefix ${{ parameters.resourcePrefix }} -integrateWithSourceControl ${{ parameters.integrateWithSourceControl }} -administratorLoginPassword ${{ parameters.dbAdminPassword }}'
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2

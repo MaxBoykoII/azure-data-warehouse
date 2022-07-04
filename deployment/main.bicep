@@ -1,8 +1,8 @@
 @description('Specifies the location for resources.')
-param location string = 'eastus'
+param location string
 
 @description('Specifies the base prefix for naming resources')
-param prefix string = 'azdwudacitydev'
+param prefix string
 
 @description('Specifies whether to integrate with source control')
 @allowed([
@@ -10,6 +10,12 @@ param prefix string = 'azdwudacitydev'
   'no'
 ])
 param integrateWithSourceControl string = 'no'
+
+@description('Specifies the db administrator login')
+param administratorLogin string = 'admin'
+
+@description('Specifies the db administrator password')
+param administratorLoginPassword string
 
 targetScope = 'subscription'
 
@@ -36,5 +42,16 @@ module synapseModule 'synapse/synapse.bicep' = {
     storageAccountId: dataLakeModule.outputs.storageAccountId
     accountUrl: dataLakeModule.outputs.storageAccountUrl
     integrateWithSourceControl: integrateWithSourceControl
+  }
+}
+
+module postgresModule 'azure-postgres-db/azure-postgres-db.bicep' = {
+  name: 'oltp-system'
+  scope: rg
+  params: {
+    location: location
+    prefix: prefix
+    administratorLogin: administratorLogin
+    administratorLoginPassword: administratorLoginPassword
   }
 }
