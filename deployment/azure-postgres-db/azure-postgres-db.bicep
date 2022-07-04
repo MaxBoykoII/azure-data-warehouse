@@ -25,7 +25,7 @@ resource server 'Microsoft.DBForPostgreSql/flexibleServers@2020-02-14-preview' =
     administratorLoginPassword: administratorLoginPassword
     
     storageProfile: {
-      storageMB: 5000
+      storageMB: 32768
       backupRetentionDays: 7
       geoRedundantBackup: 'Disabled'
     }
