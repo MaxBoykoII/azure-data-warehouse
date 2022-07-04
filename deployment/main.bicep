@@ -12,7 +12,7 @@ param prefix string
 param integrateWithSourceControl string = 'no'
 
 @description('Specifies the db administrator login')
-param administratorLogin string = 'admin'
+param administratorLogin string = 'az_dw_admin'
 
 @description('Specifies the db administrator password')
 param administratorLoginPassword string
