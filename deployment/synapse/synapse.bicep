@@ -52,4 +52,13 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
       endIpAddress: '255.255.255.255'
     }
   }
+
+  resource dedicatedPool 'sqlPools@2021-06-01' = {
+    name: 'dedicated-pool'
+    sku: 'DW100c'
+    location: location
+    properties: {
+      collation: 'SQL_Latin1_General_CP1_CI_AS'
+    }
+  }
 }
