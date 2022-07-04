@@ -10,6 +10,8 @@ param storageAccountId string
 @description('Specifies the url of the data lake storage account')
 param accountUrl string
 
+@description('Specifies whether to integrate with source control')
+param integrateWithSourceControl bool = false
 
 resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: prefix
@@ -30,13 +32,13 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
     azureADOnlyAuthentication: false
     trustedServiceBypassEnabled: true
 
-    workspaceRepositoryConfiguration: {
+    workspaceRepositoryConfiguration: (integrateWithSourceControl) ? {
       accountName: 'MaxBoykoII'
       collaborationBranch: 'main'
       type: 'WorkspaceGitHubConfiguration'
       rootFolder: '/artifacts'
       repositoryName: 'azure-data-warehouse'
-    }
+    } : {}
   }
 
   resource workspaceFirewall 'firewallRules@2021-04-01-preview' = {

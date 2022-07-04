@@ -1,18 +1,22 @@
 parameters:
- - name: environmentName
-   type: string
-  
- - name: resourcePrefix
-   type: string
+  - name: environmentName
+    type: string
 
- - name: deploymentLocation
-   type: string
+  - name: resourcePrefix
+    type: string
 
- - name: azureResourceManagerConnection
-   type: string
+  - name: deploymentLocation
+    type: string
 
- - name: adminGroupObjectId
-   type: string
+  - name: azureResourceManagerConnection
+    type: string
+
+  - name: adminGroupObjectId
+    type: string
+
+  - name: integrateWithSourceControl
+    type: boolean
+    default: false
 
 steps:
   - bash: az bicep build --file ./deployment/main.bicep
@@ -26,7 +30,7 @@ steps:
       location: ${{ parameters.deploymentLocation }}
       templateLocation: 'Linked artifact'
       csmFile: './deployment/main.json'
-      overrideParameters: '-prefix ${{ parameters.resourcePrefix }}'
+      overrideParameters: '-prefix ${{ parameters.resourcePrefix }} -integrateWithSourceControl ${{ parameters.integrateWithSourceControl }}'
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2
