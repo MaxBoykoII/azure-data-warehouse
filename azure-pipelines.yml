@@ -2,25 +2,32 @@ trigger:
   - main
 
 variables:
-  - name: deploymentLocation
-    value: 'eastus'
-
-  - name: azureResourceManagerConnection
-    value: 'az-dw-arm-sc'
-
-  - name: resourcePrefix
-    value: 'azdwudacitydev'
+  deploymentLocation: 'eastus'
+  azureResourceManagerConnection: 'az-dw-arm-sc'
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-  - checkout: self
+stages:
+  - stage: Dev_Deployment
+    displayName: 'DEV Deployment'
+    variables:
+      resourcePrefix: 'azdwudacitydev'
 
-  - template: pipeline-templates/deploy-data-platform-resources.yml
-    parameters:
-      environmentName: 'DEV'
-      resourcePrefix: $(resourcePrefix)
-      deploymentLocation: $(deploymentLocation)
-      azureResourceManagerConnection: $(azureResourceManagerConnection)
-      adminGroupObjectId: $(SynapseAdminObjectId)
+    jobs:
+      - deployment: Deploy_DEV_Environment
+        displayName: 'DEV: Deploy resources'
+        environment: 'Azure Data Warehouse - DEV'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - template: pipeline-templates/deploy-data-platform-resources.yml
+                  parameters:
+                    environmentName: 'DEV'
+                    resourcePrefix: $(resourcePrefix)
+                    deploymentLocation: $(deploymentLocation)
+                    azureResourceManagerConnection: $(azureResourceManagerConnection)
+                    adminGroupObjectId: $(SynapseAdminObjectId)
