@@ -31,4 +31,4 @@ stages:
                     deploymentLocation: $(deploymentLocation)
                     azureResourceManagerConnection: $(azureResourceManagerConnection)
                     adminGroupObjectId: $(SynapseAdminObjectId)
-                    integrateWithSourceControl: true
+                    integrateWithSourceControl: 'yes'

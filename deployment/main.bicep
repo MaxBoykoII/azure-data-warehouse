@@ -5,7 +5,11 @@ param location string = 'eastus'
 param prefix string = 'azdwudacitydev'
 
 @description('Specifies whether to integrate with source control')
-param integrateWithSourceControl bool = false
+@allowed([
+  'yes'
+  'no'
+])
+param integrateWithSourceControl string = 'no'
 
 targetScope = 'subscription'
 

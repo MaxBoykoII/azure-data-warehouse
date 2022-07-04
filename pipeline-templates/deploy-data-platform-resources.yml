@@ -15,8 +15,11 @@ parameters:
     type: string
 
   - name: integrateWithSourceControl
-    type: boolean
-    default: false
+    type: string
+    values:
+      - 'yes'
+      - 'no'
+    default: 'no'
 
 steps:
   - bash: az bicep build --file ./deployment/main.bicep
@@ -30,7 +33,7 @@ steps:
       location: ${{ parameters.deploymentLocation }}
       templateLocation: 'Linked artifact'
       csmFile: './deployment/main.json'
-      overrideParameters: '-prefix ${{ parameters.resourcePrefix }} -integrateWithSourceControl $${{ parameters.integrateWithSourceControl }}'
+      overrideParameters: '-prefix ${{ parameters.resourcePrefix }} -integrateWithSourceControl ${{ parameters.integrateWithSourceControl }}'
       deploymentMode: 'Incremental'
 
   - task: AzureCLI@2

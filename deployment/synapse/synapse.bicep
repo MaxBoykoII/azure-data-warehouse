@@ -11,7 +11,11 @@ param storageAccountId string
 param accountUrl string
 
 @description('Specifies whether to integrate with source control')
-param integrateWithSourceControl bool = false
+@allowed([
+  'yes'
+  'no'
+])
+param integrateWithSourceControl string = 'no'
 
 resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: prefix
@@ -32,7 +36,7 @@ resource synapseAnalytics 'Microsoft.Synapse/workspaces@2021-06-01' = {
     azureADOnlyAuthentication: false
     trustedServiceBypassEnabled: true
 
-    workspaceRepositoryConfiguration: (integrateWithSourceControl) ? {
+    workspaceRepositoryConfiguration: (integrateWithSourceControl == 'yes') ? {
       accountName: 'MaxBoykoII'
       collaborationBranch: 'main'
       type: 'WorkspaceGitHubConfiguration'
