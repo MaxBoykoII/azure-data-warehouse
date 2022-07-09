@@ -26,7 +26,7 @@ pool:
 
 stages:
   - stage: DEV_Deployment
-    displayName: 'DEV Deployment'
+    displayName: 'DEV: Deploy Resources and Artifacts'
     condition: and(eq(variables.isMain, 'true'), not(eq(variables.isRelease, 'true')))
     variables:
       resourcePrefix: 'azdwudacitydev'
@@ -48,6 +48,23 @@ stages:
                     adminGroupObjectId: $(SynapseAdminObjectId)
                     dbAdminPassword: $(DbAdminPassword)
                     integrateWithSourceControl: 'yes'
+
+  - stage: DEV_Populate_Postgres
+    displayName: 'DEV: Populate Postgres OLTP System'
+    dependsOn: DEV_Deployment
+    condition: and(succeeded(), eq(variables.isMain, 'true'), not(eq(variables.isRelease, 'true')))
+
+    jobs:
+      - job: populate_postgres
+        displayName: 'Populate OLTP System'
+
+        steps:
+          - task: PythonScript@0
+            displayName:  'Download and unzip data files'
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: '$(System.DefaultWorkingDirectory)/scripts/extract.py'
+              arguments: '$(ProjectFilesUrl)'
 
   - stage: TEST_Deployment
     displayName: 'TEST Deployment'
