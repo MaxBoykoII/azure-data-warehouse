@@ -64,6 +64,12 @@ stages:
               targetType: 'inline'
               script: 'env | sort'
 
+          - task: CmdLine@2
+            displayName: Install python script dependencies
+            inputs:
+              script: pip install -r requirements.txt
+              workingDirectory: '$(System.DefaultWorkingDirectory)/scripts'
+
           - task: PythonScript@0
             displayName: 'DEV: Download and unzip data files'
             inputs:
