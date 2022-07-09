@@ -1,6 +1,7 @@
 import argparse
 import requests
 import os
+import shutil
 from zipfile import ZipFile
 
 parser = argparse.ArgumentParser()
@@ -14,7 +15,7 @@ response = requests.get(args.url)
 # Print the status code
 print(response.status_code)
 
-# Save the file locally (more about open() in the next lesson)
+# Save the file locally
 directory = os.path.join(os.getcwd(), "tmp/")
 print(directory)
 os.mkdir(directory)
@@ -25,14 +26,27 @@ print(local_path)
 with open(local_path, "wb") as f:
     f.write(response.content)
 
+
+extract_directory = os.path.join(os.getcwd(), "data/")
+os.mkdir(extract_directory)
+
+
 with ZipFile(local_path, mode="r") as f:
     # Get the list of files and print it
     file_names = f.namelist()
-    extract_directory = os.path.join(os.getcwd(), "data/")
-    os.mkdir(extract_directory)
 
     for name in file_names:
         if ".csv" in name:
             print(name)
             extract_path = f.extract(name, path=extract_directory)
             print(extract_path)
+
+source_directory = os.path.join(os.getcwd(), "data/Out")
+
+files = os.listdir(source_directory)
+
+for file in files:
+    file_name = os.path.join(source_directory, file)
+    shutil.move(file_name, extract_directory)
+
+os.rmdir(source_directory)
