@@ -1,6 +1,7 @@
 import argparse
 import requests
 import os
+from zipfile import ZipFile
 
 parser = argparse.ArgumentParser()
 parser.add_argument("url", help="Specifies the url for the project files")
@@ -23,3 +24,8 @@ print(local_path)
 
 with open(local_path, "wb") as f:
     f.write(response.content)
+
+with ZipFile(local_path, mode="r") as f:
+    # Get the list of files and print it
+    file_names = f.namelist()
+    print(file_names)
