@@ -1,5 +1,4 @@
-trigger:
-  - main
+trigger: none
 
 parameters:
   - name: isRelease
@@ -59,12 +58,24 @@ stages:
         displayName: 'Populate OLTP System'
 
         steps:
+          - task: Bash@3
+            displayName: 'DEV: Print environment variables'
+            inputs:
+              targetType: 'inline'
+              script: 'env | sort'
+
           - task: PythonScript@0
-            displayName:  'Download and unzip data files'
+            displayName: 'DEV: Download and unzip data files'
             inputs:
               scriptSource: 'filePath'
               scriptPath: '$(System.DefaultWorkingDirectory)/scripts/extract.py'
               arguments: '$(ProjectFilesUrl)'
+
+          - task: Bash@3
+            displayName: 'DEV: List Contents of $(System.DefaultWorkingDirectory)'
+            inputs:
+              targetType: 'inline'
+              script: 'ls -R $(System.DefaultWorkingDirectory)'
 
   - stage: TEST_Deployment
     displayName: 'TEST Deployment'
@@ -107,7 +118,6 @@ stages:
             inputs:
               targetType: 'inline'
               script: 'ls -R $(System.DefaultWorkingDirectory)'
-
 
           - task: 'Synapse workspace deployment@1'
             inputs:
