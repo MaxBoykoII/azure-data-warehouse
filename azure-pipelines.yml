@@ -77,6 +77,13 @@ stages:
               scriptPath: '$(System.DefaultWorkingDirectory)/scripts/extract.py'
               arguments: '$(ProjectFilesUrl)'
 
+          - task: PythonScript@0
+            displayName: 'DEV: Load project data into postgres'
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: '$(System.DefaultWorkingDirectory)/scripts/load.py'
+              arguments: 'azdwudacitydev-server.postgres.database.azure.com az_dw_admin $(DbAdminPassword)'
+
           - task: Bash@3
             displayName: 'DEV: List Contents of $(System.DefaultWorkingDirectory)'
             inputs:
