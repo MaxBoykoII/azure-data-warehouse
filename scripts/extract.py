@@ -28,4 +28,11 @@ with open(local_path, "wb") as f:
 with ZipFile(local_path, mode="r") as f:
     # Get the list of files and print it
     file_names = f.namelist()
-    print(file_names)
+    extract_directory = os.path.join(os.getcwd(), "data/")
+    os.mkdir(extract_directory)
+
+    for name in file_names:
+        if ".csv" in name:
+            print(name)
+            extract_path = f.extract(name, path=extract_directory)
+            print(extract_path)
