@@ -15,6 +15,7 @@ param integrateWithSourceControl string = 'no'
 param administratorLogin string = 'az_dw_admin'
 
 @description('Specifies the db administrator password')
+@secure()
 param administratorLoginPassword string
 
 targetScope = 'subscription'

@@ -8,6 +8,7 @@ param prefix string
 param administratorLogin string
 
 @description('Specifies the administrator password')
+@secure()
 param administratorLoginPassword string
 
 
@@ -31,11 +32,19 @@ resource server 'Microsoft.DBForPostgreSql/flexibleServers@2020-02-14-preview' =
     }
   }
 
-  resource firewallRule 'firewallRules@2020-02-14-preview' = {
+  resource firewallRule1 'firewallRules@2020-02-14-preview' = {
     name: 'AllowAll'
     properties: {
       startIpAddress: '0.0.0.0'
       endIpAddress: '255.255.255.255'
+    }
+  }
+
+  resource firewallRule2 'firewallRules@2020-02-14-preview' = {
+    name: 'AllowAzureServices'
+    properties: {
+      startIpAddress: '0.0.0.0'
+      endIpAddress: '0.0.0.0'
     }
   }
 
