@@ -1,0 +1,56 @@
+{
+	"name": "IngestTripTable",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "DivvyDB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "DivvyDB"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "AzureBlobStorage",
+						"type": "LinkedServiceReference"
+					},
+					"name": "AzureBlobStorage"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          trip_id as string,",
+				"          rideable_type as string,",
+				"          start_at as timestamp,",
+				"          ended_at as timestamp,",
+				"          start_station_id as string,",
+				"          end_station_id as string,",
+				"          rider_id as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     tableName: 'trip',",
+				"     schemaName: 'public',",
+				"     store: 'postgres',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> DivvyDB",
+				"DivvyDB sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     container: 'raw',",
+				"     folderPath: 'trip',",
+				"     columnDelimiter: ',',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     columnNamesAsHeader: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> AzureBlobStorage"
+			]
+		}
+	}
+}
