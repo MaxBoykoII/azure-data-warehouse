@@ -1,0 +1,53 @@
+{
+	"name": "IngestPaymentTable",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "DivvyDB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "DivvyDB"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "AzureBlobStorage",
+						"type": "LinkedServiceReference"
+					},
+					"name": "AzureBlobStorage"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          payment_id as integer,",
+				"          date as date,",
+				"          amount as double,",
+				"          rider_id as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     tableName: 'payment',",
+				"     schemaName: 'public',",
+				"     store: 'postgres',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> DivvyDB",
+				"DivvyDB sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     container: 'raw',",
+				"     folderPath: 'payment',",
+				"     columnDelimiter: ',',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     columnNamesAsHeader: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> AzureBlobStorage"
+			]
+		}
+	}
+}
