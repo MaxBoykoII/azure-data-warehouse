@@ -1,0 +1,49 @@
+{
+	"name": "IngestRidersTable",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "DivvyDB",
+						"type": "LinkedServiceReference"
+					},
+					"name": "DivvyDB"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          rider_id as integer,",
+				"          first as string,",
+				"          last as string,",
+				"          address as string,",
+				"          birthday as date,",
+				"          account_start_date as date,",
+				"          account_end_date as date,",
+				"          is_member as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     tableName: 'rider',",
+				"     schemaName: 'public',",
+				"     store: 'postgres',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> DivvyDB",
+				"DivvyDB sink(validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: false,",
+				"     saveOrder: 1) ~> sink1"
+			]
+		}
+	}
+}
