@@ -45,8 +45,6 @@
 				"     format: 'delimited',",
 				"     container: 'raw',",
 				"     folderPath: 'rider',",
-				"     compressionCodec: 'snappy',",
-				"     compressionLevel: 'Fastest',",
 				"     columnDelimiter: ',',",
 				"     escapeChar: '\\\\',",
 				"     quoteChar: '\\\"',",
