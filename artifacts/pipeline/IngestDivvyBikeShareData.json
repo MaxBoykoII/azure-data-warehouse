@@ -56,6 +56,37 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "IngestStationTable",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "IngestPaymentTable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "IngestStationTable",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"folder": {
