@@ -1,0 +1,57 @@
+{
+	"name": "Riders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "rider",
+				"container": "raw"
+			},
+			"columnDelimiter": ",",
+			"rowDelimiter": "\r\n",
+			"escapeChar": "\"",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "rider_id",
+				"type": "String"
+			},
+			{
+				"name": "first",
+				"type": "String"
+			},
+			{
+				"name": "last",
+				"type": "String"
+			},
+			{
+				"name": "address",
+				"type": "String"
+			},
+			{
+				"name": "birthday",
+				"type": "String"
+			},
+			{
+				"name": "account_start_date",
+				"type": "String"
+			},
+			{
+				"name": "account_end_date",
+				"type": "String"
+			},
+			{
+				"name": "is_member",
+				"type": "String"
+			}
+		]
+	}
+}

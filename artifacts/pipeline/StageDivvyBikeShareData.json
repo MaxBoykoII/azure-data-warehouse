@@ -1,0 +1,141 @@
+{
+	"name": "StageDivvyBikeShareData",
+	"properties": {
+		"activities": [
+			{
+				"name": "StageRiderData",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlPoolSink",
+						"allowCopyCommand": true,
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "rider_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "rider_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "first",
+									"type": "String"
+								},
+								"sink": {
+									"name": "first",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "last",
+									"type": "String"
+								},
+								"sink": {
+									"name": "last",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "address",
+									"type": "String"
+								},
+								"sink": {
+									"name": "address",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "birthday",
+									"type": "String"
+								},
+								"sink": {
+									"name": "birthday",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "account_start_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "account_start_date",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "account_end_date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "account_end_date",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "is_member",
+									"type": "String"
+								},
+								"sink": {
+									"name": "is_member",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Riders",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "staging_rider",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": []
+	}
+}

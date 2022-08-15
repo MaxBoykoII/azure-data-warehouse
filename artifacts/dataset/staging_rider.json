@@ -1,0 +1,16 @@
+{
+	"name": "staging_rider",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "staging",
+			"table": "riders"
+		},
+		"sqlPool": {
+			"referenceName": "bikesharepool",
+			"type": "SqlPoolReference"
+		}
+	}
+}
