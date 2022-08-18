@@ -4,6 +4,12 @@
 	"parameters": {
 		"workspaceName": {
 			"value": "azdwudacitydev"
+		},
+		"AzureBlobStorage_connectionString": {
+			"value": ""
+		},
+		"DivvyDB_connectionString": {
+			"value": ""
 		}
 	}
 }
